@@ -51,6 +51,7 @@ const ProjectDialog = ({
   const submitFunds = async () => {
     setLoading(true);
     const ethTotal = amount / exchangeRate;
+    console.log(ethTotal,'ethTotal');
     const donation = web3.utils.toWei(ethTotal.toString());
     try {
       await contract.methods.donate().send({

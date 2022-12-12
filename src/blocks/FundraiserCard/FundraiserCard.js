@@ -52,6 +52,7 @@ const FundraiserCard = ({ fundraiser }) => {
       console.log('accounts---', account);
 
       const instance = new web3.eth.Contract(FundraiserContract.abi, fund);
+      
 
       setWeb3(web3);
       setContract(instance);

@@ -10,7 +10,7 @@ const NavItem = ({ items, colorInvert = false }) => {
   const [activeLink, setActiveLink] = useState('');
 
   useEffect(() => {
-    setActiveLink(window && window.location ? window.location.pathname : '');
+    setActiveLink(window && window.location ? window.location.pathname :'');
   }, []);
 
   return (
