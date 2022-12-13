@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Box } from '@mui/material';
-
+import Image1 from '../../../../../images/btb_logo_2.png';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavItem } from './components';
@@ -29,11 +29,13 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
           component={'img'}
           src={
             mode === 'light' && !colorInvert
-              ? 'https://github.com/ac12644/Crypto-Charity/blob/main/images/crypto-charity-light.png?raw=true'
-              : 'https://github.com/ac12644/Crypto-Charity/blob/main/images/crypto-charity-dark.png?raw=true'
+           ? 'https://cdn.discordapp.com/attachments/1039413091315765390/1052113180047978496/btb_logo_1_1.png'
+            :'https://cdn.discordapp.com/attachments/1039413091315765390/1052113180408692776/btb_logo_1_2.png'
+              
           }
           height={0.4}
-          width={0.4}
+          width={0.4} 
+          alt="logo"
         />
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
