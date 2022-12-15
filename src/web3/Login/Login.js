@@ -62,7 +62,7 @@ export const Login = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { provider, web3Provider, address, chainId } = state;
+  const { provider, web3Provider, address,chainId } = state;
 
   const connect = useCallback(async function () {
     const provider = await web3Modal.connect();

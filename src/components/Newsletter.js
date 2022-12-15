@@ -25,6 +25,7 @@ const Newsletter = () => {
     email: '',
   };
   const onSubmit = (values) => {
+    console.log(values);
     FirestoreService.addNewsletterEmail(values.email)
       .then((docRef) => {
         console.log('Document written with ID: ', docRef.id);

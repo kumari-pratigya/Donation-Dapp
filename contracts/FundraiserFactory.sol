@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import './Fundraiser.sol';
 
 contract FundraiserFactory {
-  uint256 constant maxLimit = 20;
+  uint256 constant maxLimit = 100;
   Fundraiser[] public _fundraisers;
 
   event FundraiserCreated(Fundraiser indexed fundraiser, address indexed owner);

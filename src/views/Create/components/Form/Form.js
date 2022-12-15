@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
+import axios from 'axios'
 import * as yup from 'yup';
 import {
   Box,
@@ -66,17 +67,12 @@ const Form = () => {
   const [dialogBoxOpen, setDialogBoxOpen] = useState(false);
   const [hash, setHash] = useState('');
 
-  const auth =
-    'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+  // const auth =
+  //   'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 
-  const client = create({
-    host: 'ipfs.infura.io',
-    port: 5001,
-    protocol: 'https',
-    headers: {
-      authorization: auth,
-    },
-  });
+  // const client = create(
+  //   'https://ipfs.io/ipfs'
+  //  );
 
   useEffect(() => {
     init();
@@ -91,7 +87,9 @@ const Form = () => {
       const connection = await web3Modal.connect();
       const web3 = new Web3(connection);
       const networkId = await web3.eth.net.getId();
+      console.log(networkId,"network id ")
       const deployedNetwork = FundraiserFactoryContract.networks[networkId];
+      console.log(deployedNetwork,"deployedNetwork--json file ")
       const accounts = await web3.eth.getAccounts();
       const instance = new web3.eth.Contract(
         FundraiserFactoryContract.abi,
@@ -110,13 +108,34 @@ const Form = () => {
 
   async function saveToIpfs(e) {
     const file = e.target.files[0];
+   
     try {
-      const added = await client.add(file, {
-        progress: (prog) => console.log(`received: ${prog}`),
-      });
-      const fileUrl = `https://ac12644.infura-ipfs.io/ipfs/${added.path}`;
-      setImage(fileUrl);
-      console.log(image);
+      const formData = new FormData();
+                formData.append("file", file);
+
+                const resFile = await axios({
+                    method: "post",
+                    url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                    data: formData,
+                    headers: {
+                        'pinata_api_key': '0f5da370094bb5f9f336',
+                        'pinata_secret_api_key':'b32eff4114105dc6a21fb283a5ad11ecd8196243931110c6e14a9624a1abe966',
+                        "Content-Type": "multipart/form-data"
+                    },
+                });
+                const ImgHash = `https://ipfs.io/ipfs/${resFile.data.IpfsHash}`;
+                console.log(ImgHash); 
+                console.log(resFile.data.IpfsHash);
+      // const reader = new window.FileReader();
+      // reader.readAsArrayBuffer(file);
+      // reader.onloadend = () => {
+      //   console.log("Buffer data: ", Buffer(reader.result));
+      // }
+      // const created = await client.add(file);
+      // const fileUrl = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+      // const fileUrl = `https://polygon-mumbai.g.alchemy.com/v2/bOkRhmdHOEc1AnDW3_-C2DCfQKTjhZOf ${file} `;
+      //  console.log(added.path,'path');
+      setImage(ImgHash);
       setOpen(true);
     } catch (error) {
       console.log('Error uploading file: ', error);

@@ -24,7 +24,6 @@ contract Fundraiser is Ownable {
   uint256 public totalDonations;
   uint256 public donationsCount;
 
-
   constructor(
     string memory _name,
     string memory _image,

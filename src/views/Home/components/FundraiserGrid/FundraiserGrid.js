@@ -196,7 +196,7 @@ const FundraiserGrid = () => {
         FundraiserFactory.abi,
         deployedNetwork && deployedNetwork.address,
       );
-      const funds = await instance.methods.fundraisers(20, 0).call();
+      const funds = await instance.methods.fundraisers(100, 0).call();
       setFunds(funds);
       console.log('------', funds);
       setFunds(funds);
@@ -207,6 +207,7 @@ const FundraiserGrid = () => {
 
   const displayFundraisers = () => {
     return funds.slice(4, 12).map((fundraiser) => {
+      console.log(fundraiser,'fundreaiser')
       return <FundraiserCard fundraiser={fundraiser} key={fundraiser} />;
     });
   };

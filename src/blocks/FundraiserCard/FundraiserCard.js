@@ -46,14 +46,13 @@ const FundraiserCard = ({ fundraiser }) => {
   const init = async (fundraiser) => {
     try {
       const fund = fundraiser;
+      console.log(fund,'-------------fund---------------')
       const provider = await detectEthereumProvider();
       const web3 = new Web3(provider);
       const account = await web3.eth.getAccounts();
       console.log('accounts---', account);
 
       const instance = new web3.eth.Contract(FundraiserContract.abi, fund);
-      
-
       setWeb3(web3);
       setContract(instance);
       setAccounts(account);
@@ -61,6 +60,7 @@ const FundraiserCard = ({ fundraiser }) => {
 
       setFundName(await instance.methods.name().call());
       setImage(await instance.methods.image().call());
+      console.log(await instance.methods.image().call(),'image')
       setDescription(await instance.methods.description().call());
       setGoalAmount(await instance.methods.goalAmount().call());
       console.log('---------data--------');
@@ -80,7 +80,7 @@ const FundraiserCard = ({ fundraiser }) => {
       setTotalDonationsEth(parseFloat(eth).toFixed(4));
       const dollarDonationAmount = exchangeRate * eth;
       setTotalDonations(dollarDonationAmount.toFixed(2));
-
+        console.log(dollarDonationAmount.toFixed(2),'donation Amount');
       const userDonation = await instance.methods
         .myDonations()
         .call({ from: accounts[0] });
@@ -124,6 +124,7 @@ const FundraiserCard = ({ fundraiser }) => {
     }
 
     return donationList.map((donation) => {
+     
       return (
         <Box>
           <Typography component={'span'} fontWeight={700}>

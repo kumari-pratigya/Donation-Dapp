@@ -111,6 +111,7 @@ const ProjectDialog = ({
                     },
                   }}
                 >
+                {console.log(image)}
                   <img src={image} alt={name} />
                 </Box>
                 {renderDonationsList}
@@ -162,8 +163,9 @@ const ProjectDialog = ({
                     >
                       Required: $
                       {totalDonations < goalAmount
-                        ? goalAmount - totalDonations
+                        ? (goalAmount - totalDonations)
                         : 0}
+                        {console.log(goalAmount-totalDonations)}
                     </Typography>
                   </Box>
                 </Box>
