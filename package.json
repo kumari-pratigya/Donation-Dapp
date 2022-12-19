@@ -39,7 +39,6 @@
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
     "@metamask/detect-provider": "^2.0.0",
-    "@mui/icons-material": "^5.2.4",
     "@mui/lab": "^5.0.0-alpha.91",
     "@mui/material": "^5.9.1",
     "@openzeppelin/contracts": "^4.7.3",
