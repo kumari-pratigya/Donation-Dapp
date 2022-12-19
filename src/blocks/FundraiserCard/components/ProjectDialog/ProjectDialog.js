@@ -56,6 +56,9 @@ const ProjectDialog = ({
   const [alertOpen, setAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);  
   console.log(account,'account') 
+  const openInNewTab = url => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
   const submitFunds = async () => {
     setLoading(true);
     const ethTotal = parseFloat(amount / exchangeRate).toFixed(4);
@@ -288,7 +291,7 @@ const ProjectDialog = ({
                 <p style={{textAlign:"center",textAlign:"center",justifyContent:"center"}}>Help us by sharing our campaign!</p>
                 <Box    sx={{margin:"10px auto"}}>
                 <Grid >
-                        <Button href={facebookLink}
+                        <Button onClick={() => openInNewTab(facebookLink)}
                         sx={{backgroundColor:"blue",margin:"5px 5px"}}  
                       
                      
@@ -298,7 +301,7 @@ const ProjectDialog = ({
                         </Button>
                 
                
-                        <Button href={linkedIn} 
+                        <Button onClick={() => openInNewTab(linkedIn)} 
                         sx={{backgroundColor:"blue",margin:"5px 5px"}}
                          variant="contained"
                         
@@ -306,7 +309,7 @@ const ProjectDialog = ({
                         LinkedIN
                         </Button>
                  
-                        <Button href={twitterLink}
+                        <Button onClick={() => openInNewTab(twitterLink)}
                          sx={{backgroundColor:"blue",margin:"5px 5px"}}
                        
                          variant="contained"
