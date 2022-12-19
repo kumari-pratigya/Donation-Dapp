@@ -29,6 +29,9 @@ const FundraiserCard = ({ fundraiser }) => {
   const [goalAmount, setGoalAmount] = useState(null);
   const [totalDonations, setTotalDonations] = useState(null);
   const [totalDonationsEth, setTotalDonationsEth] = useState(null);
+  const [facebookLink,setFaceBookLink]=useState(null)
+  const [twitterLink,setTwitterLink]=useState(null)
+  const [linkedIn,setlinkedINLink]=useState(null)
   const [contract, setContract] = useState(null);
   const [accounts, setAccounts] = useState([]);
 
@@ -51,16 +54,18 @@ const FundraiserCard = ({ fundraiser }) => {
       const web3 = new Web3(provider);
       const account = await web3.eth.getAccounts();
       console.log('accounts---', account);
-
       const instance = new web3.eth.Contract(FundraiserContract.abi, fund);
       setWeb3(web3);
       setContract(instance);
+      console.log(instance,'instance')
       setAccounts(account);
-      //console.log('----account0--', accounts[0]);
+      // console.log('----account0--', accounts[0]);
 
       setFundName(await instance.methods.name().call());
       setImage(await instance.methods.image().call());
-      console.log(await instance.methods.image().call(),'image')
+      setFaceBookLink(await instance.methods.facebookLink().call())
+      setlinkedINLink(await instance.methods.linkedinLink().call())
+      setTwitterLink(await instance.methods.twitterLink().call())
       setDescription(await instance.methods.description().call());
       setGoalAmount(await instance.methods.goalAmount().call());
       console.log('---------data--------');
@@ -85,9 +90,10 @@ const FundraiserCard = ({ fundraiser }) => {
         .myDonations()
         .call({ from: accounts[0] });
       setUserDonations(userDonation);
-
+console.log(userDonation,'userDonation-------------')
       const isUser = accounts[0];
       const isOwner = await instance.methods.owner().call();
+      console.log(isOwner,'----------isOwner')
       if (isOwner === accounts[0]) {
         setIsOwner(true);
       }
@@ -253,6 +259,9 @@ const FundraiserCard = ({ fundraiser }) => {
           key={fundraiser}
           onClose={() => setOpen(false)}
           web3={web3}
+          twitterLink={twitterLink}
+          facebookLink={facebookLink}
+          linkedIn={linkedIn}
           contract={contract}
           exchangeRate={exchangeRate}
           totalDonations={totalDonations}

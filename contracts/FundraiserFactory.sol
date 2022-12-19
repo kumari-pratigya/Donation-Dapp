@@ -13,6 +13,9 @@ contract FundraiserFactory {
     string memory name,
     string memory image,
     string memory description,
+    string memory facebookLink,
+    string memory linkedinLink,
+    string memory twitterLink,
     uint256 goalAmount,
     address payable beneficiary
   ) public {
@@ -21,12 +24,16 @@ contract FundraiserFactory {
       image,
       description,
       goalAmount,
+      facebookLink,
+      linkedinLink,
+      twitterLink,
       beneficiary,
       msg.sender
     );
     _fundraisers.push(fundraiser);
     emit FundraiserCreated(fundraiser, msg.sender);
   }
+
 
   function fundraisersCount() public view returns (uint256) {
     return _fundraisers.length;

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { alpha, useTheme } from '@mui/material/styles';
+import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import Router from 'next/router'
 import {
   Box,
   Grid,
@@ -24,7 +28,8 @@ import {
 } from '@mui/icons-material';
 import Beneficiary from './components/Beneficiary';
 import { LoadingButton } from '@mui/lab';
-
+import FundraiserContract from 'contracts/Fundraiser.json';
+import { useEffect } from 'react';
 const ProjectDialog = ({
   onClose,
   open,
@@ -33,6 +38,9 @@ const ProjectDialog = ({
   account,
   exchangeRate,
   image,
+  twitterLink,
+  facebookLink,
+  linkedIn,
   name,
   description,
   goalAmount,
@@ -46,8 +54,8 @@ const ProjectDialog = ({
   const theme = useTheme();
   const [amount, setAmount] = useState(5);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);  
+  console.log(account,'account') 
   const submitFunds = async () => {
     setLoading(true);
     const ethTotal = parseFloat(amount / exchangeRate).toFixed(4);
@@ -113,6 +121,13 @@ const ProjectDialog = ({
                 >
                 {console.log(image)}
                   <img src={image} alt={name} />
+                 
+                  <Button  onClick={()=>Router.push("/History")}               
+                   sx={{backgroundColor:"black",textAlign:"center",display:"flex",margin:"60px auto"}}
+                         variant="contained">
+                  View transaction History
+                  </Button>
+                 
                 </Box>
                 {renderDonationsList}
               </Box>
@@ -165,7 +180,8 @@ const ProjectDialog = ({
                       {totalDonations < goalAmount
                         ? (goalAmount - totalDonations)
                         : 0}
-                        {console.log(goalAmount-totalDonations)}
+                        {console.log(totalDonations,goalAmount,'donation------------------------------')}
+                        {console.log(goalAmount-totalDonations,'#################################3')}
                     </Typography>
                   </Box>
                 </Box>
@@ -232,7 +248,7 @@ const ProjectDialog = ({
                   >
                     Donate
                   </LoadingButton>
-
+              
                   {isOwner && (
                     <Button
                       color={'primary'}
@@ -269,6 +285,37 @@ const ProjectDialog = ({
                     </Button>
                   )}
                 </Stack>
+                <p style={{textAlign:"center",textAlign:"center",justifyContent:"center"}}>Help us by sharing our campaign!</p>
+                <Box    sx={{margin:"10px auto"}}>
+                <Grid >
+                        <Button href={facebookLink}
+                        sx={{backgroundColor:"blue",margin:"5px 5px"}}  
+                      
+                     
+                        variant="contained"                
+                         startIcon=<FacebookRoundedIcon/> >
+                        FaceBook
+                        </Button>
+                
+               
+                        <Button href={linkedIn} 
+                        sx={{backgroundColor:"blue",margin:"5px 5px"}}
+                         variant="contained"
+                        
+                         startIcon=<LinkedInIcon/> >
+                        LinkedIN
+                        </Button>
+                 
+                        <Button href={twitterLink}
+                         sx={{backgroundColor:"blue",margin:"5px 5px"}}
+                       
+                         variant="contained"
+                         startIcon=<TwitterIcon/>
+                         >
+                        Twitter
+                        </Button>
+                  </Grid>
+                  </Box>
                 <Collapse in={alertOpen}>
                   <Alert
                     severity="success"
@@ -300,6 +347,9 @@ const ProjectDialog = ({
 
 ProjectDialog.propTypes = {
   onClose: PropTypes.func,
+  twitterLink:PropTypes.string.isRequired,
+  facebookLink:PropTypes.string.isRequired,
+  linkedIn:PropTypes.string.isRequired,
   open: PropTypes.bool,
   web3: PropTypes.object,
   account: PropTypes.string,

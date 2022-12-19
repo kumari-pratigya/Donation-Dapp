@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import axios from 'axios'
+import axios from 'axios';
+import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import * as yup from 'yup';
 import {
   Box,
   Grid,
+  Button,
   TextField,
   Typography,
   IconButton,
@@ -37,6 +41,9 @@ const validationSchema = yup.object({
     .min(6, 'Beneficiary address should be correct')
     .required('Please specify beneficiary address')
     .matches(/0x[a-fA-F0-9]{40}/, 'Enter correct wallet address!'),
+    facebookLink:yup.string().required("required"),
+    linkedInLink:yup.string().required("required"),
+    twitterLink:yup.string().required("required")
 });
 
 const Form = () => {
@@ -46,6 +53,9 @@ const Form = () => {
       description: '',
       beneficiary: '',
       goalAmount: '',
+      facebookLink:'',
+      linkedInLink:'' ,
+      twitterLink:''
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -62,8 +72,8 @@ const Form = () => {
   const [open, setOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const projectId = process.env.INFURA_IPFS_ID;
-  const projectSecret = process.env.INFURA_IPFS_SECRET;
+  // const projectId = process.env.INFURA_IPFS_ID;
+  // const projectSecret = process.env.INFURA_IPFS_SECRET;
   const [dialogBoxOpen, setDialogBoxOpen] = useState(false);
   const [hash, setHash] = useState('');
 
@@ -81,7 +91,7 @@ const Form = () => {
   const init = async () => {
     try {
       const web3Modal = new Web3Modal({
-        network: 'mainnet',
+        network: 'testnet',
         cacheProvider: true,
       });
       const connection = await web3Modal.connect();
@@ -145,19 +155,23 @@ const Form = () => {
   }
 
   async function handleSubmit() {
-    const { name, description, beneficiary, goalAmount } = formik.values;
+    const { name, description, beneficiary, goalAmount,facebookLink,linkedInLink ,twitterLink} = formik.values;
 
     const data = JSON.stringify({
       name,
       image,
       description,
+      facebookLink,
+      linkedInLink,
+      twitterLink,
       goalAmount,
       beneficiary,
+
     });
     console.log(data);
     try {
       const transaction = await contract.methods
-        .createFundraiser(name, image, description, goalAmount, beneficiary)
+        .createFundraiser(name,image, description,facebookLink,linkedInLink,twitterLink, goalAmount,beneficiary)
         .send({ from: accounts[0] });
       setHash(transaction.transactionHash);
       setDialogBoxOpen(true);
@@ -167,7 +181,8 @@ const Form = () => {
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      alert(error);
+      // alert(error);
+      console.log("error");
       setLoading(false);
     }
     setLoading(false);
@@ -329,6 +344,69 @@ const Form = () => {
                 formik.touched.goalAmount && Boolean(formik.errors.goalAmount)
               }
               helperText={formik.touched.goalAmount && formik.errors.goalAmount}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} >
+            <Box display="flex" alignItems="center">
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+              FaceBook Url *
+              </Typography>
+            </Box>
+            <TextField
+              label="Facebook Url"
+              variant="outlined"
+              name={'facebookLink'}
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values?.facebookLink}
+              error={
+                formik.touched.facebookLink && Boolean(formik.errors.facebookLink)
+              }
+              helperText={
+                formik.touched.facebookLink && formik.errors.facebookLink
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box display="flex" alignItems="center">
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+              LinkedIn Url *
+              </Typography>
+            </Box>
+            <TextField
+              label="LinkedIn Url"
+              variant="outlined"
+              name={'linkedInLink'}
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values?.linkedInLink}
+              error={
+                formik.touched.linkedInLink && Boolean(formik.errors.linkedInLink)
+              }
+              helperText={
+                formik.touched.linkedInLink && formik.errors.linkedInLink
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box display="flex" alignItems="center">
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+              Twitter Url *
+              </Typography>
+            </Box>
+            <TextField
+              label="LinkedIn Url"
+              variant="outlined"
+              name={'twitterLink'}
+              fullWidth
+              onChange={formik.handleChange}
+              value={formik.values?.twitterLink}
+              error={
+                formik.touched.twitterLink && Boolean(formik.errors.twitterLink)
+              }
+              helperText={
+                formik.touched.twitterLink && formik.errors.twitterLink
+              }
             />
           </Grid>
           <Grid item container xs={12}>
